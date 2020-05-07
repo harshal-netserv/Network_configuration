@@ -1,0 +1,20 @@
+---
+- hosts : all
+  gather_facts: false
+  connection: network_cli
+  tasks:
+    - name: Show run on device
+      ios_command:
+        commands:
+          - show run
+      register: config
+
+    - debug:
+	      var: config.stdout[0]
+
+    - name: Save output
+      copy:
+	      content: "{{config.stdout[0]}}"
+        dest:  ~/config_data.txt
+
+
